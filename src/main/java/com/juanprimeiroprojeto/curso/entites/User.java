@@ -1,12 +1,17 @@
 package com.juanprimeiroprojeto.curso.entites;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,11 +22,15 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
+	private String name;  
 	private String email;
 	private String telefone;
 	private String senha;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "Client")
+	private List<Order> oder = new ArrayList<>();
+	
 	public User() {
 	}
 
@@ -73,11 +82,16 @@ public class User implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
+	
+	public List<Order> getOder() {
+		return oder;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -90,5 +104,6 @@ public class User implements Serializable {
 		User other = (User) obj;
 		return id == other.id;
 	}
+
 
 }
